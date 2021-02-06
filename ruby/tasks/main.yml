@@ -1,0 +1,31 @@
+---
+# tasks file for ruby
+
+- name: "Install rbenv"
+  community.general.homebrew:
+    name:
+      - rbenv
+      - ruby-build
+    state: present
+
+- name: "export rbenv path to PATH"
+  script: export_path.sh
+
+- name: "Select ruby version"
+  command: "{{ansible_user_shell}} -l -c 'rbenv global {{ ruby.version }}'"
+  register: correct_ruby_version
+  ignore_errors: true
+
+- name: "Install ruby version"
+  command: "{{ansible_user_shell}} -l -c 'rbenv install {{ ruby.version }}'"
+  register: installed_ruby_version
+  when: correct_ruby_version.rc == 1
+
+- name: "Select installed ruby version"
+  command: "{{ansible_user_shell}} -l -c 'rbenv global {{ ruby.version }}'"
+  when:
+    - correct_ruby_version.rc == 1
+    - installed_ruby_version.rc == 0
+
+
+

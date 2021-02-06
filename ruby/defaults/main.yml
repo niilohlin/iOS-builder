@@ -1,0 +1,4 @@
+---
+# defaults file for ruby
+ruby:
+  version: 2.7.0

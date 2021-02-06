@@ -1,0 +1,19 @@
+---
+
+- name: setup playbook
+  hosts: ios_builders
+  remote_user: administrator
+  become: false
+  gather_facts: true
+
+  roles:
+    - brew
+    - role: ruby
+      vars:
+        ruby:
+          version: 2.7.2
+
+  tasks:
+    - homebrew:
+        name: jq
+        state: present
