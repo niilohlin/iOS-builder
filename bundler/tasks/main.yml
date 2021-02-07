@@ -1,5 +1,17 @@
 ---
 
+- name: Debug path variable
+  command: "{{ansible_user_shell}} -l -c 'echo $PATH'"
+  register: path
+
+- name: Debug path
+  debug:
+    var: path
+
+- name: Ensure using correct gem
+  command: "{{ansible_user_shell}} -l -c 'which gem'"
+  register: gem_path
+  failed_when: "gem_path.stdout == '/usr/bin/gem'"
 
 - name: Install global iOS gem dependencies
   command: "{{ansible_user_shell}} -l -c 'gem install {{ item }}'"

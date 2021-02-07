@@ -8,10 +8,27 @@
       - ruby-build
     state: present
 
-- name: "export rbenv path to PATH"
-  script: export_path.sh
-  register: export_out
-  changed_when: "'changed' in export_out.stdout"
+- name: "ensure rbenv is in bash PATH"
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.bash_profile"
+    line: "{{ item }}"
+    mode: 0755
+    create: true
+  when: lookup('env', 'SHELL') == '/bin/bash'
+  loop:
+    - "eval $(rbenv init -)"
+    - 'export PATH="$HOME/.rbenv/bin:$PATH"'
+
+- name: "ensure rbenv is in zsh PATH"
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.zprofile"
+    line: "{{ item }}"
+    mode: 0755
+    create: true
+  when: lookup('env', 'SHELL') == '/bin/zsh'
+  loop:
+    - "eval \"$(rbenv init -)\""
+    - 'export PATH="$HOME/.rbenv/bin:$PATH"'
 
 - name: "Select ruby version"
   command: "{{ansible_user_shell}} -l -c 'rbenv global {{ ruby.version }}'"
@@ -28,6 +45,4 @@
   when:
     - correct_ruby_version.rc == 1
     - installed_ruby_version.rc == 0
-
-
 
