@@ -1,0 +1,10 @@
+---
+
+- name: "Install provided Xcode versions"
+  become: true
+  command: "{{ansible_user_shell}} -l -c 'FASTLANE_USER=\"{{ xcode.fastlane_user }} FASTLANE_PASSWORD=\"{{ xcode.fastlane_password }}\"\"xcversion install {{ item }}'"
+  register: xcversion_output
+  changed_when: "not 'already installed.' in xcversion_output.stdout"
+  loop: {{ xcode.versions }}
+
+# tasks file for xcversion

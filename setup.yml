@@ -12,6 +12,12 @@
       vars:
         ruby:
           version: 2.7.2
+    - bundler
+    # - role: xcversion
+    #   vars:
+    #     xcode:
+    #       versions:
+    #         - "12.3"
 
   tasks:
     - homebrew:

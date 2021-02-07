@@ -10,6 +10,8 @@
 
 - name: "export rbenv path to PATH"
   script: export_path.sh
+  register: export_out
+  changed_when: "'changed' in export_out.stdout"
 
 - name: "Select ruby version"
   command: "{{ansible_user_shell}} -l -c 'rbenv global {{ ruby.version }}'"

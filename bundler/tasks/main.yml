@@ -1,0 +1,11 @@
+---
+
+
+- name: Install global iOS gem dependencies
+  command: "{{ansible_user_shell}} -l -c 'gem install {{ item }}'"
+  loop:
+    - bundler
+    - xcode-install
+    - fastlane
+    - cocoapods
+
