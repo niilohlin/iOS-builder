@@ -23,3 +23,6 @@
     - homebrew:
         name: jq
         state: present
+    - homebrew:
+        name: carthage
+        state: present

@@ -4,8 +4,24 @@
   stat:
     path: /usr/local/bin/brew
   register: b
+  changed_when: false
+
+- name: Ensure nopassword sudo for ansible user
+  become: true
+  lineinfile:
+    path: /etc/sudoers
+    line: "{{ ansible_user }}   ALL = (ALL) NOPASSWD:ALL"
+  when: not b.stat.exists
 
 - name: Install Homebrew
+  become: false
   script: install-homebrew.sh
   when: not b.stat.exists
 
+- name: Remove nopassword sudo for ansible user
+  become: true
+  lineinfile:
+    path: /etc/sudoers
+    line: "{{ ansible_user }}   ALL = (ALL) NOPASSWD:ALL"
+    state: absent
+  when: not b.stat.exists
