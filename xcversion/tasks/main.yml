@@ -1,5 +1,12 @@
 ---
 
+- name: Ensure nopassword sudo for ansible user
+  become: true
+  lineinfile:
+    path: /etc/sudoers
+    line: "{{ ansible_user }}   ALL = (ALL) NOPASSWD:ALL"
+  when: not b.stat.exists
+
 - name: "Install provided Xcode versions"
   become: true
   command: "{{ansible_user_shell}} -l -c \
@@ -10,4 +17,14 @@
   changed_when: "not 'already installed.' in xcversion_output.stdout"
   loop: "{{ xcode.versions }}"
 
-# tasks file for xcversion
+- name: Select correct Xcode version
+  become: true
+  command: "{{ansible_user_shell}} -l -c xcversion select {{ xcode.selected }}'"
+
+- name: Remove nopassword sudo for ansible user
+  become: true
+  lineinfile:
+    path: /etc/sudoers
+    line: "{{ ansible_user }}   ALL = (ALL) NOPASSWD:ALL"
+    state: absent
+  when: not b.stat.exists
