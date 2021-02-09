@@ -1,0 +1,18 @@
+
+digraph G {
+
+    "iOS Builder" -> Xcode;
+    Xcode -> xcversion;
+    xcversion -> gem;
+    ruby -> rbenv;
+    rbenv -> homebrew;
+    homebrew -> xcode_tools;
+    carthage -> homebrew;
+    gem -> ruby;
+    cocoapods -> bundler;
+    bundler -> gem;
+    fastlane -> bundler;
+    "iOS Builder" -> cocoapods;
+    "iOS Builder" -> carthage;
+    "iOS Builder" -> fastlane;
+ }
