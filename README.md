@@ -1,6 +1,35 @@
 
 # iOS Build server set up.
 
+## Ansible set up.
+
+To install Ansible run `pip install ansible`. This ansible script has 2
+dependencies:
+
+* community.general
+* elliotweiser.osx-command-line-tools
+
+To install run `ansible-galaxy collection install community.general` and
+`ansible-galaxy install elliotweiser.osx-command-line-tools`.
+
+Then, edit your `/etc/ansible/hosts` and add these lines
+
+```
+[ios_builders]
+XXX.XXX.XXX.XXX
+YYY.YYY.YYY.YYY
+[ios_builders:vars]
+ansible_connection=ssh
+ansible_user=<username>
+ansible_ssh_pass=<password>
+ansible_become_method=sudo
+ansible_become_pass=<password>
+```
+
+Now you can execute the script using:
+
+`ansible-playbook setup.yml`
+
 ![dependencies](./dependencies.png)
 
 ## Homebrew
