@@ -30,7 +30,12 @@ Now you can execute the script using:
 
 `ansible-playbook setup.yml`
 
+
+## Dependencies graph
+
 ![dependencies](./dependencies.png)
+
+The arrows represents a "depends on" relation.
 
 ## Homebrew
 
